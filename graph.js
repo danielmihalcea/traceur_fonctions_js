@@ -9,20 +9,20 @@ var dx = cwidth/(xmax-xmin);
 var dy = cheight/(ymax-ymin);
 var type = 1;
 var d0,d1;
-var fx="cos(x/2)+sin(x*2)";document.getElementById("formfx").value=fx;
-function x2scr(x){
+var fx="cos(x/2)+sin(x*2)";document.getElementById("formfx").value=fx; // fonction f(x) par défaut, pour l'exemple
+function x2scr(x){ // converti une coordonnée x cartésienne en coordonnée "écran" (canevas)
     return (x-xmin)*dx;
 }
-function y2scr(y){
+function y2scr(y){ // converti une coordonnée y cartésienne en coordonnée "écran" (canevas)
     return (-y+ymax)*dy;
 }
-function scr2x(x){
+function scr2x(x){ // converti une coordonnée x "écran" (canevas) en coordonnée cartésienne
     return xmin+x/dx;
 }
-function scr2y(y){
+function scr2y(y){ // converti une coordonnée y "écran" (canevas) en coordonnée cartésienne
     return ymax-y/dy;
 }
-function cartline(x1,y1,x2,y2,c,ctx){
+function cartline(x1,y1,x2,y2,c,ctx){ // dessine une ligne à partir de coordonnées cartésiennes 
     ctx.beginPath();
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -40,7 +40,7 @@ function line(x1,y1,x2,y2,c,ctx){
     context.lineTo(x2,y2);
     context.stroke();
 }
-function drawgrid(ctx){
+function drawgrid(ctx){ // dessine la grille
     for(var i=0;i<xmax;i+=step){
         var a = x2scr(i);
         line(a,0,a,cheight,"#ccc",ctx);
@@ -58,7 +58,7 @@ function drawgrid(ctx){
         line(0,b,cwidth,b,"#ccc",ctx);
     }
 }
-function drawaxis(ctx){
+function drawaxis(ctx){ // dessine les axes x et y avec les graduations
     var a,b;
     line(0,y2scr(0),cwidth,y2scr(0),"black",ctx);
     line(x2scr(0),0,x2scr(0),cheight,"black",ctx);
