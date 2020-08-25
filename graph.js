@@ -1,14 +1,14 @@
-var cwidth = 1000;
-var cheight = 800;
-var xmin = -2;document.getElementById("formxmin").value=xmin;
+var cwidth = 1000; // largeur par défaut de la zone graphique
+var cheight = 800; // hauteur par défaut de la zone graphique
+var xmin = -2;document.getElementById("formxmin").value=xmin; // coordonnées cartésiennes de la fenêtre
 var xmax = 6;document.getElementById("formxmax").value=xmax;
 var ymin = -3.2;document.getElementById("formymin").value=ymin;
 var ymax = 3.2;document.getElementById("formymax").value=ymax;
-var step = 1;
-var dx = cwidth/(xmax-xmin);
-var dy = cheight/(ymax-ymin);
-var type = 1;
-var d0,d1;
+var step = 1; // pas de la grille
+var dx = cwidth/(xmax-xmin); // facteur d'échelle x
+var dy = cheight/(ymax-ymin); // facteur d'échelle y
+var type = 1; // inutilisé pour le moment
+var d0,d1; // chrono
 var fx="cos(x/2)+sin(x*2)";document.getElementById("formfx").value=fx; // fonction f(x) par défaut, pour l'exemple
 function x2scr(x){ // converti une coordonnée x cartésienne en coordonnée "écran" (canevas)
     return (x-xmin)*dx;
@@ -31,7 +31,7 @@ function cartline(x1,y1,x2,y2,c,ctx){ // dessine une ligne à partir de coordonn
     context.lineTo(x2scr(x2),y2scr(y2));
     context.stroke();
 }
-function line(x1,y1,x2,y2,c,ctx){
+function line(x1,y1,x2,y2,c,ctx){ // dessine une ligne à partir de coordonnées écran
     ctx.beginPath();
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -41,19 +41,19 @@ function line(x1,y1,x2,y2,c,ctx){
     context.stroke();
 }
 function drawgrid(ctx){ // dessine la grille
-    for(var i=0;i<xmax;i+=step){
+    for(var i=0;i<xmax;i+=step){ //allignée sur le 0, à droite
         var a = x2scr(i);
         line(a,0,a,cheight,"#ccc",ctx);
     }
-    for(var i=0;i>xmin;i-=step){
+    for(var i=0;i>xmin;i-=step){ // et à gauche
         var a = x2scr(i);
         line(a,0,a,cheight,"#ccc",ctx);
     }
-    for(var i=0;i<ymax;i+=step){
+    for(var i=0;i<ymax;i+=step){ // en haut
         var b = y2scr(i);
         line(0,b,cwidth,b,"#ccc",ctx);
     }
-    for(var i=0;i>ymin;i-=step){
+    for(var i=0;i>ymin;i-=step){ // et en bas
         var b = y2scr(i);
         line(0,b,cwidth,b,"#ccc",ctx);
     }
@@ -94,7 +94,7 @@ function parsefx(f){
 }
 
 function cartesien(){
-    d0 = new Date();
+    d0 = new Date(); // début chronomètre
     context = document.getElementById("canvas").getContext("2d");
     document.getElementById("canvas").width = cwidth;
     document.getElementById("canvas").height = cheight;
@@ -116,14 +116,14 @@ function cartesien(){
         context.lineTo(i,y2scr(y));
     }
     context.stroke();
-    d1 = new Date();
+    d1 = new Date(); // fin chrononmètre
     var d = (d1-d0)/1000;
     document.getElementById("disp").innerHTML = "temps de calcul : "+d.toString()+"sec";
     document.getElementById("calc").style.display = "none";
     
 }
 
-function polaire(){
+function polaire(){ // à faire : tracé de graphiques en coordonnées polaires
     
 }
 
