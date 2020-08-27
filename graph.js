@@ -83,17 +83,20 @@ function drawaxis(ctx){ // dessine les axes x et y avec les graduations
     }
     ctx.strokeText("y", a+5, 10);
 }
+
+// fonctions mathématiques
 function cos(x){return Math.cos(x);}
 function sin(x){return Math.sin(x);}
 function tan(x){return Math.tan(x);}
 function log(x,b){if(b===undefined){b=10;};return Math.log(x)/Math.log(b);}
 function ln(x){return Math.log(x);}
+// constates mathématiques
 function parsefx(f){
     f = f.replace("pi","Math.PI");
     return f;
 }
 
-function cartesien(){
+function cartesien(){ // dessine la fonction en coordonnées cartésiennes
     d0 = new Date(); // début chronomètre
     context = document.getElementById("canvas").getContext("2d");
     document.getElementById("canvas").width = cwidth;
@@ -146,7 +149,7 @@ function draw(){
     setTimeout("calc()", 10);
 }
 
-function reinit(){
+function reinit(){ // rétablit les coordonnées par défaut de la fenêtre
     cwidth = 1000;document.getElementById("formlarg").value=cwidth;
     cheight = 800;document.getElementById("formhaut").value=cheight;
     xmin = -2;document.getElementById("formxmin").value=xmin;
@@ -157,7 +160,7 @@ function reinit(){
     dy = cheight/(ymax-ymin);
     draw();
 }
-function ratio(){
+function ratio(){ // défini la hauteur de façon proportionnnelle à la largeur
     var dx = xmax-xmin;
     var dy = dx*cheight/cwidth;
     var y0 = (ymin+ymax)/2;
@@ -199,7 +202,7 @@ function handle(delta) {
     draw();
 }
 
-function wheel(event){
+function wheel(event){ // gestion de la molette de la souris
     var delta = 0;
     if (!event)
             event = window.event;
@@ -220,14 +223,14 @@ function wheel(event){
 var context;
 var img;
 var mov=false;
-function begin(event){
+function begin(event){ // clic souris
     m_x0 = m_x;
     m_y0 = m_y;
     context = document.getElementById("canvas").getContext("2d");
-    img = context.getImageData(0, 0, cwidth, cheight);
+    img = context.getImageData(0, 0, cwidth, cheight); // capture l'image du tracé
     mov=true;
 }
-function move(event){
+function move(event){ // déplacement souris
     if (!mov) return;
     var xs=(xmax-xmin)/cwidth;
     var ys=(ymax-ymin)/cheight;
@@ -240,9 +243,9 @@ function move(event){
     document.getElementById("formymin").value=ymin+cy;
     document.getElementById("formymax").value=ymax+cy;
     context.clearRect(0,0,cwidth,cheight);
-    context.putImageData(img,mx,my);
+    context.putImageData(img,mx,my); // affiche le tracé décalé selon le déplacement de la souris
 }
-function end(event){
+function end(event){ // relâchement souris
     mov=false;
     var xs = (xmax-xmin)/cwidth;
     var ys = (ymax-ymin)/cheight;
