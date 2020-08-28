@@ -88,11 +88,19 @@ function drawaxis(ctx){ // dessine les axes x et y avec les graduations
 function cos(x){return Math.cos(x);}
 function sin(x){return Math.sin(x);}
 function tan(x){return Math.tan(x);}
+function acos(x){return Math.acos(x);}
+function asin(x){return Math.asin(x);}
+function atan(x){return Math.atan(x);}
+function sqrt(x){return Math.sqrt(x);}
+function pow(x,y){return Math.pow(x,y);}
 function log(x,b){if(b===undefined){b=10;};return Math.log(x)/Math.log(b);}
 function ln(x){return Math.log(x);}
+function abs(x){return Math.abs(x);}
+
 // constates mathématiques
 function parsefx(f){
     f = f.replace("pi","Math.PI");
+    f = f.replace("e","Math.E");
     return f;
 }
 
