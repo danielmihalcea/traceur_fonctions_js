@@ -97,8 +97,10 @@ function log(x,b){if(b===undefined){b=10;};return Math.log(x)/Math.log(b);}
 function ln(x){return Math.log(x);}
 function abs(x){return Math.abs(x);}
 
-// constates mathématiques
+// constantes mathématiques & fonctions
 function parsefx(f){
+    f = f.replace("^","**");
+    f = f.replace("²","**2");
     f = f.replace("pi","Math.PI");
     f = f.replace("e","Math.E");
     return f;
