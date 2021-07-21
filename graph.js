@@ -99,10 +99,10 @@ function abs(x){return Math.abs(x);}
 
 // constantes mathématiques & fonctions
 function parsefx(f){
-    f = f.replace("^","**");
-    f = f.replace("²","**2");
-    f = f.replace("pi","Math.PI");
-    f = f.replace("e","Math.E");
+    f = f.replaceAll("^","**");
+    f = f.replaceAll("²","**2");
+    f = f.replaceAll("pi","Math.PI");
+    f = f.replaceAll("e","Math.E");
     return f;
 }
 
