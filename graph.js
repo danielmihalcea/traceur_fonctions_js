@@ -5,22 +5,22 @@ var xmax = 6;document.getElementById("formxmax").value=xmax;
 var ymin = -3.2;document.getElementById("formymin").value=ymin;
 var ymax = 3.2;document.getElementById("formymax").value=ymax;
 var step = 1; // pas de la grille
-var dx = cwidth/(xmax-xmin); // facteur d'échelle x
-var dy = cheight/(ymax-ymin); // facteur d'échelle y
+var dx = (xmax-xmin)/cwidth; // facteur d'échelle x
+var dy = (ymax-ymin)/cheight; // facteur d'échelle y
 var type = 1; // inutilisé pour le moment
 var d0,d1; // chrono
 var fx="cos(x/2)+sin(x*2)";document.getElementById("formfx").value=fx; // fonction f(x) par défaut, pour l'exemple
 function x2scr(x){ // converti une coordonnée x cartésienne en coordonnée "écran" (canevas)
-    return (x-xmin)*dx;
+    return (x-xmin)/dx;
 }
 function y2scr(y){ // converti une coordonnée y cartésienne en coordonnée "écran" (canevas)
-    return (-y+ymax)*dy;
+    return (ymax-y)/dy;
 }
 function scr2x(x){ // converti une coordonnée x "écran" (canevas) en coordonnée cartésienne
-    return xmin+x/dx;
+    return xmin+x*dx;
 }
 function scr2y(y){ // converti une coordonnée y "écran" (canevas) en coordonnée cartésienne
-    return ymax-y/dy;
+    return ymax-y*dy;
 }
 function cartline(x1,y1,x2,y2,c,ctx){ // dessine une ligne à partir de coordonnées cartésiennes 
     ctx.beginPath();
@@ -115,6 +115,7 @@ function cartesien(){ // dessine la fonction en coordonnées cartésiennes
     drawgrid(context);
     drawaxis(context);
     var i=0;
+    var cont = false;
     var x = scr2x(i);
     fx2 = parsefx(fx);
     y = eval(fx2);
@@ -122,13 +123,29 @@ function cartesien(){ // dessine la fonction en coordonnées cartésiennes
     context.lineWidth = 1;
     context.beginPath();
     context.strokeStyle = "red";
-    context.moveTo(i,y2scr(y));
+    if (isNaN(y))
+        context.moveTo(i,y2scr(0));
+    else {
+        context.moveTo(i,y2scr(y));
+        cont=true;
+    }
     for(i=1;i<cwidth;i++){
         x = scr2x(i);
         y = eval(fx2);
-        context.lineTo(i,y2scr(y));
+        if (isNaN(y)) {
+            // context.moveTo(i,y2scr(0));
+            cont = false;
+        } else {
+            if (cont) {
+                context.lineTo(i,y2scr(y));
+                context.stroke();
+            } else {
+                context.moveTo(i,y2scr(y));
+            }
+            cont=true;
+        }
     }
-    context.stroke();
+    // context.stroke();
     d1 = new Date(); // fin chrononmètre
     var d = (d1-d0)/1000;
     document.getElementById("disp").innerHTML = "temps de calcul : "+d.toString()+"sec";
@@ -142,9 +159,9 @@ function polaire(){ // à faire : tracé de graphiques en coordonnées polaires
 
 function calc(){
     document.getElementById("calc").style.display = "block";
-    dx = cwidth/(xmax-xmin);
-    dy = cheight/(ymax-ymin);
-    switch(type){
+    dx = (xmax-xmin)/cwidth; // facteur d'échelle x
+    dy = (ymax-ymin)/cheight; // facteur d'échelle y
+        switch(type){
         case 1:
         default:
             cartesien();
@@ -166,8 +183,8 @@ function reinit(){ // rétablit les coordonnées par défaut de la fenêtre
     xmax = 6;document.getElementById("formxmax").value=xmax;
     ymin = -3.2;document.getElementById("formymin").value=ymin;
     ymax = 3.2;document.getElementById("formymax").value=ymax;
-    dx = cwidth/(xmax-xmin);
-    dy = cheight/(ymax-ymin);
+    dx = (xmax-xmin)/cwidth; // facteur d'échelle x
+    dy = (ymax-ymin)/cheight; // facteur d'échelle y
     draw();
 }
 function ratio(){ // défini la hauteur de façon proportionnnelle à la largeur
@@ -236,7 +253,7 @@ var mov=false;
 function begin(event){ // clic souris
     m_x0 = m_x;
     m_y0 = m_y;
-    context = document.getElementById("canvas").getContext("2d");
+    context = document.getElementById("canvas").getContext("2d", {willReadFrequently: true});
     img = context.getImageData(0, 0, cwidth, cheight); // capture l'image du tracé
     mov=true;
 }
